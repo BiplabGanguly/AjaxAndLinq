@@ -1,0 +1,6 @@
+D:\ASP_Assignment_II\UserProfileSearch\Entity\bin\Debug\Entity.dll
+D:\ASP_Assignment_II\UserProfileSearch\Entity\bin\Debug\Entity.pdb
+D:\ASP_Assignment_II\UserProfileSearch\Entity\obj\Debug\Entity.csproj.AssemblyReference.cache
+D:\ASP_Assignment_II\UserProfileSearch\Entity\obj\Debug\Entity.csproj.CoreCompileInputs.cache
+D:\ASP_Assignment_II\UserProfileSearch\Entity\obj\Debug\Entity.dll
+D:\ASP_Assignment_II\UserProfileSearch\Entity\obj\Debug\Entity.pdb

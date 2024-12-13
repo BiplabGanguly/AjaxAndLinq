@@ -1,0 +1,134 @@
+﻿@model IEnumerable<Entity.Customer>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Customers</h2>
+
+@{
+    if (TempData["msg"] != null)
+    {
+        <div class="alert alert-primary" role="alert">
+            @TempData["msg"]
+        </div>
+    }
+}
+
+<br />
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-md-2 mb-3 mb-md-0">
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-outline-success" })
+        </div>
+        <div class="col-md-6 d-flex align-items-center mb-3 mb-md-0" style="gap: 1rem;">
+            <input type="text" class="form-control" placeholder="Search..." id="searchBox" />
+            <button type="button" class="btn btn-outline-dark" id="searchBtn">Search</button>
+        </div>
+        <div class="col-md-4 mb-3 mb-md-0">
+            <select class="form-control" id="filterSelect">
+            </select>
+        </div>
+    </div>
+</div>
+<br />
+
+<table class="table table-striped" id="customersTable">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.Phone)</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Street)</th>
+            <th>@Html.DisplayNameFor(model => model.City)</th>
+            <th>@Html.DisplayNameFor(model => model.State)</th>
+            <th>@Html.DisplayNameFor(model => model.ZipCode)</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+    </tbody>
+</table>
+
+
+@section scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        function loadCustomers() {
+            var searchText = $('#searchBox').val();
+            var filter = $('#filterSelect').val();
+
+            $.ajax({
+                url: '@Url.Action("GetCustomers", "Customer")',
+                type: 'GET',
+                data: { search: searchText, filter: filter },
+                success: function(data) {
+                    $('#customersTable #tableBody').empty();
+
+                    if (data.length === 0) {
+                        $('#customersTable #tableBody').append('<tr><td colspan="8">No customers found</td></tr>');
+                    }
+                    $.each(data, function(index, item) {
+                        var row = '<tr>' +
+                            '<td>' + item.Id + '</td>'+
+                            '<td>' + item.FirstName + '</td>' +
+                            '<td>' + item.LastName + '</td>' +
+                            '<td>' + item.Phone + '</td>' +
+                            '<td>' + item.Email + '</td>' +
+                            '<td>' + item.Street + '</td>' +
+                            '<td>' + item.City + '</td>' +
+                            '<td>' + item.State + '</td>' +
+                            '<td>' + item.ZipCode + '</td>' +
+                            '</tr>';
+
+                        $('#customersTable #tableBody').append(row);
+                    });
+                },
+                error: function(error) {
+                    alert("An error occurred while loading customer data");
+                }
+            });
+        }
+
+        function loadCustomersDropdown() {
+            var filter = $('#filterSelect').val();
+            $.ajax({
+                url: '@Url.Action("GetCustomers", "Customer")',
+                type: 'GET',
+                success: function(data) {
+                    $('#filterSelect').empty();
+                    $('#filterSelect').append('<option value="">Select Customer</option>');
+                    $.each(data, function(index, item) {
+                        var option = '<option value="' + item.Id + '">' + item.FirstName + '</option>';
+                        $('#filterSelect').append(option);
+                    });
+                },
+                error: function(error) {
+                    alert("An error occurred while loading customer data");
+                }
+            });
+        }
+
+        $(document).ready(function() {
+
+            loadCustomers();
+            loadCustomersDropdown();
+
+
+            $('#searchBtn').on('click', function () {
+                var searchText = $('#searchBox').val();
+                loadCustomers(searchText);
+            });
+
+
+            $('#filterSelect').on('change', function () {
+                var filter = $('#filterSelect').val();
+                loadCustomers(filter);
+                $('#filterSelect').val("");
+            });
+        });
+    </script>
+}
+
+

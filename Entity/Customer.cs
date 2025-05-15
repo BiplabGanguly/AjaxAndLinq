@@ -9,7 +9,7 @@ namespace Entity
 {
     public class Customer
     {
-        [Required(ErrorMessage = "Please enter ID")]
+        [Required(ErrorMessage = "Please enter Id")]
         public int Id { get; set; }
         [Required]
         [RegularExpression(@"^[^\d]+$", ErrorMessage = "First name cannot contain numbers.")]
